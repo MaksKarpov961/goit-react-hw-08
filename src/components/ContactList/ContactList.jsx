@@ -4,11 +4,14 @@ import s from "./ContactList.module.css";
 
 const ContactList = () => {
   const contacts = useSelector((state) => state.contacts.contacts.items);
-  console.log(contacts);
+  const filter = useSelector((state) => state.filters.value);
+  const filteredData = contacts.filter((item) =>
+    item.name.toLowerCase().includes(filter)
+  );
 
   return (
     <ul className={s.contact_list}>
-      {contacts.map((contact) => {
+      {filteredData.map((contact) => {
         return (
           <li className={s.contact_item} key={contact.id}>
             <Contact
