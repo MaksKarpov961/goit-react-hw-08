@@ -7,6 +7,7 @@ import { selectNameFilter } from "../../redux/filtersSlice";
 const ContactList = () => {
   const contacts = useSelector(selectContacts);
   const filter = useSelector(selectNameFilter);
+  if (!contacts) return;
   const filteredData = contacts.filter((item) =>
     item.name.toLowerCase().includes(filter)
   );

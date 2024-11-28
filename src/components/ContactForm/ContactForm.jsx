@@ -27,7 +27,6 @@ const ContactForm = () => {
   };
   const dispatch = useDispatch();
   const onSubmit = (values, actions) => {
-    console.log(values);
     dispatch(
       addContact({
         id: crypto.randomUUID(),
