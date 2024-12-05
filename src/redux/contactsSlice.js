@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchContacts } from "./contactsOps";
+import { fetchContacts, addContact } from "./contactsOps";
 
 const initialState = {
   contacts: {
@@ -26,14 +26,18 @@ const slice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchContacts.fulfilled, (state, action) => {
-      state.contacts.items = action.payload;
-    });
+    builder
+      .addCase(fetchContacts.fulfilled, (state, action) => {
+        state.contacts.items = action.payload;
+      })
+      .addCase(addContact.fulfilled, (state, action) => {
+        state.contacts.items.push(action.payload);
+      });
   },
 });
 
 export const selectContacts = (state) => state.contacts.contacts.items;
 
-export const { addContact, deleteContact } = slice.actions;
+export const { deleteContact } = slice.actions;
 
 export default slice.reducer;

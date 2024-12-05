@@ -3,7 +3,7 @@ import s from "./ContactForm.module.css";
 import { useId } from "react";
 import * as Yup from "yup";
 import { useDispatch } from "react-redux";
-import { addContact } from "../../redux/contactsSlice";
+import { addContact } from "../../redux/contactsOps";
 
 const FeedbackSchema = Yup.object().shape({
   name: Yup.string()
@@ -12,8 +12,8 @@ const FeedbackSchema = Yup.object().shape({
     .required("Required"),
   number: Yup.string()
     .matches(
-      /^\d{3}-\d{2}-\d{2}$/,
-      "Invalid format! Expected format: XXX-XX-XX"
+      /^\d{3}-\d{3}-\d{4}$/,
+      "Invalid format! Expected format: XXX-XXX-XXXX"
     )
     .min(3, "Too Short!")
     .max(50, "Too Long!")
