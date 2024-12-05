@@ -19,12 +19,12 @@ const FeedbackSchema = Yup.object().shape({
 });
 
 const formatNumber = (value) => {
-  const digits = value.replace(/\D/g, ""); // Залишаємо лише цифри
+  const digits = value.replace(/\D/g, "");
   return digits
     .replace(/(\d{3})(\d{3})?(\d{4})?/, (match, g1, g2, g3) =>
       [g1, g2, g3].filter(Boolean).join("-")
     )
-    .slice(0, 12); // Обмеження до формату XXX-XXX-XXXX
+    .slice(0, 12);
 };
 
 const ContactForm = () => {
@@ -38,7 +38,6 @@ const ContactForm = () => {
   const onSubmit = (values, actions) => {
     dispatch(
       addContact({
-        id: crypto.randomUUID(),
         name: values.name,
         number: values.number,
       })
@@ -87,7 +86,7 @@ const ContactForm = () => {
                   className={s.input}
                   id={numberFieldId}
                   type="text"
-                  value={formatNumber(values.number)} // Форматуємо значення під час введення
+                  value={formatNumber(values.number)}
                   onChange={(e) =>
                     setFieldValue("number", formatNumber(e.target.value))
                   }
