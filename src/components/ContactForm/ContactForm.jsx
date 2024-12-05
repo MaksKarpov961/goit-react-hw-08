@@ -15,17 +15,26 @@ const FeedbackSchema = Yup.object().shape({
       /^\d{3}-\d{3}-\d{4}$/,
       "Invalid format! Expected format: XXX-XXX-XXXX"
     )
-    .min(3, "Too Short!")
-    .max(50, "Too Long!")
     .required("Required"),
 });
+
+const formatNumber = (value) => {
+  const digits = value.replace(/\D/g, ""); // Залишаємо лише цифри
+  return digits
+    .replace(/(\d{3})(\d{3})?(\d{4})?/, (match, g1, g2, g3) =>
+      [g1, g2, g3].filter(Boolean).join("-")
+    )
+    .slice(0, 12); // Обмеження до формату XXX-XXX-XXXX
+};
 
 const ContactForm = () => {
   const initialValues = {
     name: "",
     number: "",
   };
+
   const dispatch = useDispatch();
+
   const onSubmit = (values, actions) => {
     dispatch(
       addContact({
@@ -47,45 +56,55 @@ const ContactForm = () => {
       onSubmit={onSubmit}
       validationSchema={FeedbackSchema}
     >
-      <Form className={s.form}>
-        <div className={s.label_wrapper}>
-          <label className={s.label} htmlFor={nameFieldId}>
-            Name
-          </label>
-          <Field
-            placeholder="Enter Name"
-            className={s.input}
-            type="text"
-            name="name"
-            id={nameFieldId}
-          />
-          <ErrorMessage
-            className={s.errprMessage}
-            name="name"
-            component="span"
-          />
-        </div>
-        <div className={s.label_wrapper}>
-          <label className={s.label} htmlFor={numberFieldId}>
-            Number
-          </label>
-          <Field
-            placeholder="Enter Number"
-            className={s.input}
-            type="text"
-            name="number"
-            id={numberFieldId}
-          />
-          <ErrorMessage
-            className={s.errprMessage}
-            name="number"
-            component="span"
-          />
-        </div>
-        <button className={s.btn_submite} type="submit">
-          Add Contact
-        </button>
-      </Form>
+      {({ setFieldValue, values }) => (
+        <Form className={s.form}>
+          <div className={s.label_wrapper}>
+            <label className={s.label} htmlFor={nameFieldId}>
+              Name
+            </label>
+            <Field
+              placeholder="Enter Name"
+              className={s.input}
+              type="text"
+              name="name"
+              id={nameFieldId}
+            />
+            <ErrorMessage
+              className={s.errprMessage}
+              name="name"
+              component="span"
+            />
+          </div>
+          <div className={s.label_wrapper}>
+            <label className={s.label} htmlFor={numberFieldId}>
+              Number
+            </label>
+            <Field name="number">
+              {({ field }) => (
+                <input
+                  {...field}
+                  placeholder="Enter Number"
+                  className={s.input}
+                  id={numberFieldId}
+                  type="text"
+                  value={formatNumber(values.number)} // Форматуємо значення під час введення
+                  onChange={(e) =>
+                    setFieldValue("number", formatNumber(e.target.value))
+                  }
+                />
+              )}
+            </Field>
+            <ErrorMessage
+              className={s.errprMessage}
+              name="number"
+              component="span"
+            />
+          </div>
+          <button className={s.btn_submite} type="submit">
+            Add Contact
+          </button>
+        </Form>
+      )}
     </Formik>
   );
 };
