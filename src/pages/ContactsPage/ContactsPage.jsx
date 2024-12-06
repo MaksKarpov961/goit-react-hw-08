@@ -1,20 +1,23 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import DocumentTitle from "../../components/DocumentTitle";
-import { fetchTasks } from "../../redux/tasks/operations";
-import { selectLoading } from "../../redux/tasks/selectors";
+import Loader from "../../components/Loader/Loader";
+import ContactForm from "../../components/ContactForm/ContactForm";
+import SearchBox from "../../components/SearchBox/SearchBox";
+import ContactList from "../../components/ContactList/ContactList";
+import { fetchContacts } from "../../redux/contacts/operations";
+import { selectIsLoading } from "../../redux/contacts/selectors";
 
 export default function ContactsPage() {
   const dispatch = useDispatch();
-  const isLoading = useSelector(selectLoading);
 
   useEffect(() => {
-    dispatch(fetchTasks());
+    dispatch(fetchContacts());
   }, [dispatch]);
-
+  const isLoading = useSelector(selectIsLoading);
   return (
     <>
-      <DocumentTitle>Your tasks</DocumentTitle>
+      <DocumentTitle>Your Contacts</DocumentTitle>
       <h1>Phonebook</h1>
       <ContactForm />
       <SearchBox />

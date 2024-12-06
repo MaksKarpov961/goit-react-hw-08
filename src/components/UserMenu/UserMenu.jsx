@@ -1,9 +1,9 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { logOut } from '../../redux/auth/operations';
-import { selectUser } from '../../redux/auth/selectors';
-import css from './UserMenu.module.css';
+import { useDispatch, useSelector } from "react-redux";
+import { logOut } from "../../redux/auth/operations";
+import { selectUser } from "../../redux/auth/selectors";
+import css from "./UserMenu.module.css";
 
-export const UserMenu = () => {
+const UserMenu = () => {
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
 
@@ -16,3 +16,5 @@ export const UserMenu = () => {
     </div>
   );
 };
+
+export default UserMenu;
